@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -12,19 +12,19 @@ export async function getAllWorkouts(req: Request, res: Response) {
       include: {
         exercises: {
           include: {
-            exercise: true,
-          },
-        },
+            exercise: true
+          }
+        }
       },
       orderBy: {
-        scheduledAt: "asc",
-      },
+        scheduledAt: 'asc'
+      }
     });
 
     res.json(workouts);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Something went wrong" });
+    res.status(500).json({ error: 'Something went wrong' });
   }
 }
 
@@ -44,22 +44,22 @@ export async function createWorkout(req: Request, res: Response) {
             exerciseId: exercise.exerciseId,
             sets: exercise.sets,
             reps: exercise.reps,
-            weight: exercise.weight,
-          })),
-        },
+            weight: exercise.weight
+          }))
+        }
       },
       include: {
         exercises: {
           include: {
-            exercise: true,
-          },
-        },
-      },
+            exercise: true
+          }
+        }
+      }
     });
 
     res.status(201).json(workout);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Workout creation failed" });
+    res.status(500).json({ error: 'Workout creation failed' });
   }
 }
