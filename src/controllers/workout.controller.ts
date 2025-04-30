@@ -163,3 +163,34 @@ export async function deleteWorkout(req: Request, res: Response) {
     res.status(500).json({ error: 'Failed to delete workout' });
   }
 }
+
+export async function getScheduledWorkouts(req: Request, res: Response) {
+  const userId = (req as any).userId;
+  const { from, to } = req.query;
+
+  const fromDate = from ? new Date(from as string) : new Date();
+  const toDate = to ? new Date(to as string) : undefined;
+
+  try {
+    const workouts = await prisma.workout.findMany({
+      where: {
+        userId,
+        scheduledAt: {
+          gte: fromDate,
+          ...(toDate && { lte: toDate })
+        }
+      },
+      orderBy: { scheduledAt: 'asc' },
+      include: {
+        exercises: {
+          include: { exercise: true }
+        }
+      }
+    });
+
+    res.json(workouts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch scheduled workouts' });
+  }
+}

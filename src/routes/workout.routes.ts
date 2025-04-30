@@ -3,6 +3,7 @@ import {
   createWorkout,
   deleteWorkout,
   getAllWorkouts,
+  getScheduledWorkouts,
   getWorkoutById,
   updateWorkout
 } from '../controllers/workout.controller';
@@ -11,6 +12,7 @@ import { authenticateToken } from '../middlewares/auth.middleware';
 const router = Router();
 
 router.get('/', authenticateToken, getAllWorkouts);
+router.get('/scheduled', authenticateToken, getScheduledWorkouts);
 router.post('/create', authenticateToken, createWorkout);
 router.get('/:id', authenticateToken, async (req, res) => {
   await getWorkoutById(req, res);
