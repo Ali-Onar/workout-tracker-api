@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import workoutRoutes from './routes/workout.routes';
+import reportRoutes from './routes/report.route';
+
 dotenv.config();
 
 const app = express();
@@ -15,5 +17,6 @@ app.get('/health', (req, res) => {
 
 app.use('/auth', authRoutes);
 app.use('/workouts', workoutRoutes);
+app.use('/reports', reportRoutes);
 
 export default app;
